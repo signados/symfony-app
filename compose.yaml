@@ -1,0 +1,63 @@
+# Comments are provided throughout this file to help you get started.
+# If you need more help, visit the Docker Compose reference guide at
+# https://docs.docker.com/go/compose-spec-reference/
+
+# Here the instructions define your application as a service called "server".
+# This service is built from the Dockerfile in the current directory.
+# You can add other services your application may depend on here, such as a
+# database or a cache. For examples, see the Awesome Compose repository:
+# https://github.com/docker/awesome-compose
+services:
+      server:
+            build:
+                  context: .
+            ports:
+                  - 9001:80
+            env_file: # Carga las variables de entorno desde el archivo .env
+                  - .env
+            volumes:
+                  - .:/var/www/html # Monta todo el código del proyecto en /var/www/html dentro del contenedor
+                  - ./config/jwt:/config/jwt # M
+            environment:
+                  #NO SERIA NECESARIO YA QUE SE CARGAN DESDE EL ARCHIVO .env
+                  APP_ENV: prod
+                  APP_SECRET: 63a8071f63d66ac4d28e64d8137c0682
+                  DATABASE_URL: "sqlite:///%kernel.project_dir%/var/data.db"
+                  CORS_ALLOW_ORIGIN: '^https?://(localhost|127\.0\.0\.1)(:[0-9]+)?$'
+                  JWT_SECRET_KEY: /config/jwt/private.pem
+                  JWT_PUBLIC_KEY: /config/jwt/public.pem
+                  JWT_PASSPHRASE: seguridadmaxima
+                  MAILER_DSN: smtp://xxxx:xxxx@localhost:1025
+# The commented out section below is an example of how to define a PostgreSQL
+# database that your application can use. `depends_on` tells Docker Compose to
+# start the database before your application. The `db-data` volume persists the
+# database data between container restarts. The `db-password` secret is used
+# to set the database password. You must create `db/password.txt` and add
+# a password of your choosing to it before running `docker-compose up`.
+#     depends_on:
+#       db:
+#         condition: service_healthy
+#   db:
+#     image: postgres
+#     restart: always
+#     user: postgres
+#     secrets:
+#       - db-password
+#     volumes:
+#       - db-data:/var/lib/postgresql/data
+#     environment:
+#       - POSTGRES_DB=example
+#       - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+#     expose:
+#       - 5432
+#     healthcheck:
+#       test: [ "CMD", "pg_isready" ]
+#       interval: 10s
+#       timeout: 5s
+#       retries: 5
+# volumes:
+#   db-data:
+# secrets:
+#   db-password:
+#     file: db/password.txt
+

@@ -1,0 +1,23 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Para evitar bucles de redirección con index.php
+    RewriteRule ^index\.php(/|$) - [L]
+
+    # Si el archivo o directorio no existe, redirige a index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /index.php [L]
+</IfModule>
+
+# Evitar el listado de directorios
+Options -Indexes
+
+# Proteger archivos sensibles
+<Files .env>
+    Require all denied
+</Files>
+
+<FilesMatch "(^\.ht|\.yaml$|^\.env$|composer\.json|composer\.lock)">
+    Require all denied
+</FilesMatch>
