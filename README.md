@@ -120,3 +120,12 @@ docker exec -it (El id de contenedor)
 ls /var/www/html/public
 
 docker exec -it (El id de contenedor) tail -f /var/log/apache2/error.log
+
+# Con api platform y cors activado
+
+symfony composer require api-platform/api-pack
+
+Comentar dos lineas de la configuración:
+
+#event_listeners_backward_compatibility_layer: false
+#keep_legacy_inflector: false
